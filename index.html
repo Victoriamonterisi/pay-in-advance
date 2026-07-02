@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Adelantá tu cuota - GOcuotas</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #f5f5f5;
+      color: #333;
+    }
+
+    /* ─── NAVBAR ─────────────────────────────────────────── */
+    nav {
+      background: white;
+      padding: 14px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.08);
+    }
+
+    nav img.logo {
+      height: 40px;
+    }
+
+    nav .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    nav a.nav-help {
+      color: #EE2A7B;
+      text-decoration: none;
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    nav a.nav-help:hover {
+      text-decoration: underline;
+    }
+
+    nav a.btn-ingresar {
+      background: transparent;
+      color: #EE2A7B;
+      border: 1px solid #EE2A7B;
+      padding: 8px 20px;
+      border-radius: 999px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 14px;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    nav a.btn-ingresar:hover {
+      background: #EE2A7B;
+      color: white;
+    }
+
+    nav a.btn-ingresar:hover {
+      opacity: 0.9;
+    }
+
+    /* ─── HERO ───────────────────────────────────────────── */
+    .hero {
+      background: #EE2A7B;
+      color: white;
+      text-align: center;
+      padding: 52px 80px 56px;
+    }
+
+    .hero h1 {
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 700;
+      margin-bottom: 20px;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.3;
+    }
+
+    .hero .cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      max-width: 1000px;
+      margin: 0 auto 24px;
+    }
+
+    @media (max-width: 560px) {
+      .hero .cards { grid-template-columns: 1fr; }
+    }
+
+    .hero .card {
+      background: rgba(255,255,255,0.22);
+      border-radius: 14px;
+      padding: 20px;
+      text-align: left;
+    }
+
+    .hero .card-title {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: white;
+    }
+
+    .hero .card-desc {
+      font-size: 0.83rem;
+      line-height: 1.5;
+      color: rgba(255,255,255,0.9);
+      margin-bottom: 0;
+    }
+
+    .hero .card-link {
+      display: inline-block;
+      margin-top: 10px;
+      font-size: 0.83rem;
+      font-weight: 600;
+      color: white;
+      text-decoration: underline;
+    }
+
+    .hero .btn-pagar {
+      background: white;
+      color: #EE2A7B;
+      padding: 12px 40px;
+      border-radius: 999px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 1rem;
+      display: inline-block;
+      transition: transform 0.15s, box-shadow 0.15s;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.15);
+    }
+
+    .hero .btn-pagar:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+    }
+
+    /* ─── GANADORES ──────────────────────────────────────── */
+    .winners-section {
+      max-width: 1200px;
+      margin: 48px auto 64px;
+      padding: 0 40px;
+    }
+
+    .winners-section h2 {
+      text-align: left;
+      font-size: 1.5rem;
+      margin-bottom: 36px;
+      color: #1a1a2e;
+    }
+
+    /* Acordeón por año */
+    .year-group {
+      margin-bottom: 16px;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    .year-toggle {
+      width: 100%;
+      background: #EE2A7B;
+      color: white;
+      border: none;
+      padding: 16px 24px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      font-family: 'Poppins', sans-serif;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: background 0.2s;
+    }
+
+    .year-toggle:hover {
+      background: #d4006e;
+    }
+
+    .year-toggle.year-current {
+      cursor: default;
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    .year-toggle.year-current:hover {
+      background: #EE2A7B;
+    }
+
+    .year-toggle .arrow {
+      font-size: 1.2rem;
+      transition: transform 0.3s;
+    }
+
+    .year-toggle.open .arrow {
+      transform: rotate(180deg);
+    }
+
+    .year-content {
+      background: white;
+      display: none;
+      padding: 24px;
+    }
+
+    .year-content.open {
+      display: block;
+    }
+
+    .year-content-current {
+      background: white;
+      display: block;
+      padding: 24px;
+    }
+
+    /* Grid de meses — 3 por fila */
+    .months-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    @media (max-width: 600px) {
+      .months-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    /* Card de cada mes */
+    .month-card {
+      background: #fafafa;
+      border-radius: 12px;
+      padding: 16px 14px;
+      text-align: center;
+      border: 1px solid #fde8f1;
+      transition: box-shadow 0.2s;
+    }
+
+    .month-card:hover {
+      box-shadow: 0 4px 12px rgba(238,42,123,0.12);
+    }
+
+    .month-card .month-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #EE2A7B;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 10px;
+    }
+
+    .month-card img {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      border-radius: 10px;
+      object-fit: cover;
+      object-position: top;
+      margin-bottom: 10px;
+      display: block;
+    }
+
+    .month-card .avatar-placeholder {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      border-radius: 10px;
+      background: #fde8f1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      margin-bottom: 10px;
+    }
+
+    .month-card .winner-name {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #1a1a2e;
+      margin-bottom: 4px;
+    }
+
+    .month-card .winner-dni {
+      font-size: 0.74rem;
+      color: #888;
+    }
+
+    /* ─── FOOTER ─────────────────────────────────────────── */
+    footer {
+      background: #9E005D;
+      color: white;
+      text-align: center;
+      padding: 24px;
+      font-size: 0.82rem;
+      line-height: 1.6;
+    }
+
+    footer a {
+      color: #F2CED3;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════════════════
+       NAVBAR
+  ════════════════════════════════════════════════════════ -->
+  <nav>
+    <a href="https://www.gocuotas.com">
+      <img
+        class="logo"
+        src="https://s3.us-east-005.backblazeb2.com/gocuotas-assets/assets/img/logo-8ae52d1d1ff80f78868cf8e38326e896525c0dc65840631b5150a5f24bdcceee.svg"
+        alt="GOcuotas"
+      />
+    </a>
+    <div class="nav-links">
+      <a class="nav-help" href="https://ayuda.gocuotas.com" target="_blank">Ayuda</a>
+      <a class="btn-ingresar" href="https://app.gocuotas.com" target="_blank">Ingresar</a>
+    </div>
+  </nav>
+
+
+  <!-- ═══════════════════════════════════════════════════════
+       HERO
+  ════════════════════════════════════════════════════════ -->
+  <section class="hero">
+    <h1>¡Adelantar tu cuota tiene beneficios!</h1>
+    <div class="cards">
+      <div class="card">
+        <div class="card-title">🎁 Participás del sorteo mensual</div>
+        <p class="card-desc">Sorteamos increíbles premios todos los meses y te los enviamos a tu casa. ¡Por cada día que adelantás, sumás una chance extra para ganar!</p>
+      </div>
+      <div class="card">
+        <div class="card-title">📈 Aumentás tu límite disponible</div>
+        <p class="card-desc">Aumentamos tu límite para que puedas comprar en miles de comercios.</p>
+        <a class="card-link" href="https://www.gocuotas.com/comercios" target="_blank">Conocer comercios →</a>
+      </div>
+    </div>
+    <a class="btn-pagar" href="https://app.gocuotas.com/pay_in_advance" target="_blank">
+      Adelantar mi cuota
+    </a>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════════════════
+       GANADORES
+       ─────────────────────────────────────────────────────
+       ORDEN: el mes más reciente va PRIMERO (arriba).
+              Dentro de cada mes, el ganador más nuevo va primero.
+
+       CÓMO AGREGAR UN MES NUEVO:
+       1. Copiá un bloque <div class="month-group"> completo.
+       2. Pegalo ARRIBA del mes anterior dentro del mismo año.
+       3. Cambiá el título del mes.
+
+       CÓMO AGREGAR UN GANADOR:
+       1. Dentro del mes correcto, copiá un <div class="winner-card">.
+       2. Reemplazá foto, nombre y DNI.
+
+       FOTOS: URL externa o nombre del archivo si está en la misma carpeta.
+       Sin foto: dejá el <div class="avatar-placeholder">🏆</div>
+  ════════════════════════════════════════════════════════ -->
+  <section class="winners-section">
+    <h2>Últimos ganadores</h2>
+
+
+    <!-- ─── 2026 (siempre visible, sin botón) ─── -->
+    <div class="year-group">
+      <div class="year-toggle year-current">
+        <span>2026</span>
+      </div>
+      <div class="year-content-current">
+
+        <!--
+          CÓMO AGREGAR UN MES NUEVO:
+          Copiá una .month-card y pegala PRIMERO (arriba de todo).
+          Cambiá el month-label, la foto, el nombre y el DNI.
+        -->
+        <div class="months-grid">
+
+          <div class="month-card">
+            <div class="month-label">Febrero 2026</div>
+            <img src="https://s3.us-east-005.backblazeb2.com/gocuotas-assets/assets/pay_in_advance/2026/feb_2026-281ec95a3c208e4e36c52d2213b54b44a92999c435fc17b709bc6274d36a0c1b.jpg" alt="Silvia Urquiza" />
+            <div class="winner-name">Silvia Urquiza</div>
+            <div class="winner-dni">DNI finalizado en 614</div>
+          </div>
+
+          <div class="month-card">
+            <div class="month-label">Enero 2026</div>
+            <img src="https://s3.us-east-005.backblazeb2.com/gocuotas-assets/assets/pay_in_advance/2026/jan_2026-60e85b16d803cb1d5e9f0b58421b3a42fbb7419745241bce3eae85ae9c985b8b.jpeg" alt="Romina Gomez" />
+            <div class="winner-name">Romina Gomez</div>
+            <div class="winner-dni">DNI finalizado en 000</div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+    <!-- Fin 2026 -->
+
+
+    <!-- ─── 2025 (cerrado por defecto) ─── -->
+    <div class="year-group">
+      <button class="year-toggle" onclick="toggleYear(this)">
+        <span>2025</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="year-content">
+        <div class="months-grid">
+
+          <div class="month-card">
+            <div class="month-label">Diciembre 2025</div>
+            <img src="https://s3.us-east-005.backblazeb2.com/gocuotas-assets/assets/pay_in_advance/2025/dec_2025-b469bf9f6261913ac63ebdb170b0eb2353b6a426f6b81c9134aa9c37d0c79ac4.jpg" alt="Lorena Llarias" />
+            <div class="winner-name">Lorena Llarias</div>
+            <div class="winner-dni">DNI finalizado en 172</div>
+          </div>
+
+          <div class="month-card">
+            <div class="month-label">Noviembre 2025</div>
+            <img src="https://s3.us-east-005.backblazeb2.com/gocuotas-assets/assets/pay_in_advance/2025/nov_2025_win-89d03e0bfc673b6f2b7f3102efb651401469df2d4bb68226e109b01d66b2ea23.jpg" alt="Melina Torres" />
+            <div class="winner-name">Melina Torres</div>
+            <div class="winner-dni">DNI finalizado en 050</div>
+          </div>
+
+          <div class="month-card">
+            <div class="month-label">Octubre 2025</div>
+            <img src="https://s3.us-east-005.backblazeb2.com/gocuotas-assets/assets/pay_in_advance/2025/oct_2025_win-8b05793345915a83a09d516e9201d8209475abcce207eb9f3bed80adc3b198bb.jpeg" alt="Mayra Baldini" />
+            <div class="winner-name">Mayra Baldini</div>
+            <div class="winner-dni">DNI finalizado en 749</div>
+          </div>
+
+          <div class="month-card">
+            <div class="month-label">Septiembre 2025</div>
+            <img src="https://s3.us-east-005.backblazeb2.com/gocuotas-assets/assets/pay_in_advance/2025/sept_2025_win-d3abf25e83c671ee381af2383c188dc471a065dd2c87e54b3b347f12e5601d7f.jpeg" alt="Abigail Sosa Candela" />
+            <div class="winner-name">Abigail Sosa Candela</div>
+            <div class="winner-dni">DNI finalizado en 927</div>
+          </div>
+
+          <div class="month-card">
+            <div class="month-label">Agosto 2025</div>
+            <img src="https://s3.us-east-005.backblazeb2.com/gocuotas-assets/assets/pay_in_advance/2025/aug_2025_winner-8d60ef9c06cefe9f5fda3fcb7861daa5645b9ce9818d523db425f3ab9f925627.jpeg" alt="Florencia Belen Cocerez" />
+            <div class="winner-name">Florencia Belen Cocerez</div>
+            <div class="winner-dni">DNI finalizado en 935</div>
+          </div>
+
+          <div class="month-card">
+            <div class="month-label">Julio 2025</div>
+            <img src="https://s3.us-east-005.backblazeb2.com/gocuotas-assets/assets/pay_in_advance/2025/jul_2025_winner-504f8a83b5b468ab0a2904fbce0646a7ef0d915fbbb2fab53c39227949966955.jpeg" alt="Maria Isabel Lopez" />
+            <div class="winner-name">Maria Isabel Lopez</div>
+            <div class="winner-dni">DNI finalizado en 389</div>
+          </div>
+
+          <div class="month-card">
+            <div class="month-label">Junio 2025</div>
+            <img src="https://s3.us-east-005.backblazeb2.com/gocuotas-assets/assets/pay_in_advance/2025/winner_jun_2025-605c56ec30fb0021c9bc0deb31e087329cde6c09b6931d2c15b3c1d9dd4b1246.jpg" alt="Ruth Sosa" />
+            <div class="winner-name">Ruth Sosa</div>
+            <div class="winner-dni">DNI finalizado en 236</div>
+          </div>
+
+          <div class="month-card">
+            <div class="month-label">Mayo 2025</div>
+            <img src="https://s3.us-east-005.backblazeb2.com/gocuotas-assets/assets/pay_in_advance/2025/winner_may_2025-b4a4ec1c6d79227338c4c0716f85d303574e5aa0e5e686d0dc3343bc9dc2d8f9.jpg" alt="Adriana Dabrio" />
+            <div class="winner-name">Adriana Dabrio</div>
+            <div class="winner-dni">DNI finalizado en 203</div>
+          </div>
+
+          <div class="month-card">
+            <div class="month-label">Abril 2025</div>
+            <img src="https://s3.us-east-005.backblazeb2.com/gocuotas-assets/assets/pay_in_advance/2025/winner_apr_2025-f1b2196f81977cb123e34b61a22ba935b78e6178db8f910decd74aa0a2b8fc24.jpeg" alt="Prokop Valeria Alejandra" />
+            <div class="winner-name">Prokop Valeria Alejandra</div>
+            <div class="winner-dni">DNI finalizado en 795</div>
+          </div>
+
+          <div class="month-card">
+            <div class="month-label">Marzo 2025</div>
+            <img src="https://s3.us-east-005.backblazeb2.com/gocuotas-assets/assets/pay_in_advance/2025/mar_2025_winner-ccff85a2f69cf02abbad271d21dbdad89e27d547aad365ab9fad06768c9e42c7.jpeg" alt="Calderon Maria Cecilia" />
+            <div class="winner-name">Calderon Maria Cecilia</div>
+            <div class="winner-dni">DNI finalizado en 330</div>
+          </div>
+
+          <div class="month-card">
+            <div class="month-label">Febrero 2025</div>
+            <img src="https://s3.us-east-005.backblazeb2.com/gocuotas-assets/assets/pay_in_advance/2025/feb_2025_winner-dc79cff0460f8bbd255dbfa7f2caa9b5bc77bbdf21ce5a85f8b3320f62a5301c.jpeg" alt="Marco Sthefano" />
+            <div class="winner-name">Marco Sthefano</div>
+            <div class="winner-dni">DNI finalizado en 189</div>
+          </div>
+
+          <div class="month-card">
+            <div class="month-label">Enero 2025</div>
+            <img src="https://s3.us-east-005.backblazeb2.com/gocuotas-assets/assets/pay_in_advance/2025/winner_jan_2025-0b65b44a21ff036395fc89035777d1fa51d29033a7d6c4a5080e2850e06503a2.jpeg" alt="Belizan Nicolas Nahuel" />
+            <div class="winner-name">Belizan Nicolas Nahuel</div>
+            <div class="winner-dni">DNI finalizado en 645</div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <!-- Fin 2025 -->
+
+
+    <!-- ─── 2024 (cerrado por defecto) ─── -->
+    <div class="year-group">
+      <button class="year-toggle" onclick="toggleYear(this)">
+        <span>2024</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="year-content">
+        <div class="months-grid">
+
+          <div class="month-card">
+            <div class="month-label">Diciembre 2024</div>
+            <img src="https://s3.us-east-005.backblazeb2.com/gocuotas-assets/assets/pay_in_advance/2024/dec_2024_winner-cfbca83c960d2ba047bc1d4e90d7845e6ac75d2cdf81c2a8b2e52c93e26527ba.jpeg" alt="Cintia San Martin" />
+            <div class="winner-name">Cintia San Martin</div>
+            <div class="winner-dni">DNI finalizado en 870</div>
+          </div>
+
+          <div class="month-card">
+            <div class="month-label">Octubre 2024</div>
+            <img src="https://s3.us-east-005.backblazeb2.com/gocuotas-assets/assets/pay_in_advance/2024/oct_2024_winner-7b79e24d6df924b4141dc9706a0cd56648b65c0861f97d2089eb4bfa458cabe5.jpg" alt="Griselda Erica Blanco" />
+            <div class="winner-name">Griselda Erica Blanco</div>
+            <div class="winner-dni">DNI finalizado en 394</div>
+          </div>
+
+          <div class="month-card">
+            <div class="month-label">Septiembre 2024</div>
+            <img src="https://s3.us-east-005.backblazeb2.com/gocuotas-assets/assets/pay_in_advance/2024/sep_2024_winner-8a7fe963fcc8a3cb1babbf0cc989db3d4c34e217be416fe751e346101c44944c.jpg" alt="Juarez Jennie Natalia" />
+            <div class="winner-name">Juarez Jennie Natalia</div>
+            <div class="winner-dni">DNI finalizado en 597</div>
+          </div>
+
+          <div class="month-card">
+            <div class="month-label">Agosto 2024</div>
+            <img src="https://s3.us-east-005.backblazeb2.com/gocuotas-assets/assets/pay_in_advance/2024/aug_2024_winner-42ee0b14424b619923dd73a5ab77c3028bf1029f80e2a7e52d8d88efd5314562.jpg" alt="Ariel Ledesma" />
+            <div class="winner-name">Ariel Ledesma</div>
+            <div class="winner-dni">DNI finalizado en 006</div>
+          </div>
+
+          <div class="month-card">
+            <div class="month-label">Julio 2024</div>
+            <img src="https://s3.us-east-005.backblazeb2.com/gocuotas-assets/assets/pay_in_advance/2024/jul_2024_winner-f41d6368a654b433b012b0a32364a72135d1e714040e8e1e3d5263d1a3c4a494.jpg" alt="Kenyerly Fernandez" />
+            <div class="winner-name">Kenyerly Fernandez</div>
+            <div class="winner-dni">DNI finalizado en 308</div>
+          </div>
+
+          <div class="month-card">
+            <div class="month-label">Junio 2024</div>
+            <img src="https://s3.us-east-005.backblazeb2.com/gocuotas-assets/assets/pay_in_advance/2024/jun_2024_winner-6b5d601634fbca2d660b0d378a55473f584e0f26c7417459d3fcab90ab67c97b.jpeg" alt="Andrea Azambuya" />
+            <div class="winner-name">Andrea Azambuya</div>
+            <div class="winner-dni">DNI finalizado en 754</div>
+          </div>
+
+          <div class="month-card">
+            <div class="month-label">Mayo 2024</div>
+            <img src="https://s3.us-east-005.backblazeb2.com/gocuotas-assets/assets/pay_in_advance/2024/may_winner-ff0d4752e7399ae8450f5a45dfcad45bb6be41ec5457d6ec2a9592d49f02815c.jpeg" alt="Micaela Retamozo" />
+            <div class="winner-name">Micaela Retamozo</div>
+            <div class="winner-dni">DNI finalizado en 843</div>
+          </div>
+
+          <div class="month-card">
+            <div class="month-label">Abril 2024</div>
+            <img src="https://s3.us-east-005.backblazeb2.com/gocuotas-assets/assets/pay_in_advance/2024/apr_winner-de419ff5936f592b9e863cf580ca67d9b1c7b309b9d172290db02f8d062f89e0.jpg" alt="Alicia Silvia Roldan" />
+            <div class="winner-name">Alicia Silvia Roldan</div>
+            <div class="winner-dni">DNI finalizado en 596</div>
+          </div>
+
+          <div class="month-card">
+            <div class="month-label">Marzo 2024</div>
+            <img src="https://s3.us-east-005.backblazeb2.com/gocuotas-assets/assets/pay_in_advance/2024/mar_winner-8f50472b103219a7850d16a5da6656b1a8099a9a4f601d5ea1557ebbab6a36ee.jpg" alt="Ana Hernández Infante" />
+            <div class="winner-name">Ana Hernández Infante</div>
+            <div class="winner-dni">DNI finalizado en 065</div>
+          </div>
+
+          <div class="month-card">
+            <div class="month-label">Febrero 2024</div>
+            <img src="https://s3.us-east-005.backblazeb2.com/gocuotas-assets/assets/pay_in_advance/2024/feb_winner-6766252ad11bf0905e970b4516e923c04154070b9d765333495f9c8cb44640d4.jpeg" alt="Palacios Maria Florencia" />
+            <div class="winner-name">Palacios Maria Florencia</div>
+            <div class="winner-dni">DNI finalizado en 218</div>
+          </div>
+
+          <div class="month-card">
+            <div class="month-label">Enero 2024</div>
+            <img src="https://s3.us-east-005.backblazeb2.com/gocuotas-assets/assets/pay_in_advance/2024/jan_winner3-12de19c89bff2e43239acba401a5f3c0d19032408bb88d8ff9dd9d5551a33aec.jpeg" alt="Paula Alem" />
+            <div class="winner-name">Paula Alem</div>
+            <div class="winner-dni">DNI finalizado en 084</div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <!-- Fin 2024 -->
+
+
+    <!-- ─── 2023 (cerrado por defecto) ─── -->
+    <div class="year-group">
+      <button class="year-toggle" onclick="toggleYear(this)">
+        <span>2023</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="year-content">
+        <div class="months-grid">
+
+          <div class="month-card">
+            <div class="month-label">Diciembre 2023</div>
+            <img src="https://s3.us-east-005.backblazeb2.com/gocuotas-assets/assets/pay_in_advance/2023/dic_winner-b6b25b884c1f7c628d575397a7b01a38eb24b228768edd772aa68b78926b8b1d.jpeg" alt="Amalia Rolon" />
+            <div class="winner-name">Amalia Rolon</div>
+            <div class="winner-dni">DNI finalizado en 322</div>
+          </div>
+
+          <div class="month-card">
+            <div class="month-label">Noviembre 2023</div>
+            <img src="https://s3.us-east-005.backblazeb2.com/gocuotas-assets/assets/pay_in_advance/2023/nov_winner-688db273ec141e0cdeaaf40d7fbfb4f58d9c5b30736a39a4cce06d22d1341ec6.jpeg" alt="Leandro Nazar" />
+            <div class="winner-name">Leandro Nazar</div>
+            <div class="winner-dni">DNI finalizado en 246</div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <!-- Fin 2023 -->
+
+
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════════════════
+       FOOTER
+  ════════════════════════════════════════════════════════ -->
+  <footer>
+    <p>
+      Los modelos de productos sorteados pueden variar por disponibilidad de stock.<br />
+      <a href="https://www.gocuotas.com" target="_blank">gocuotas.com</a>
+    </p>
+    <p style="margin-top: 12px;">
+      <a href="https://ayuda.gocuotas.com/es/articles/10077283-sorteo-adelanta-tus-cuotas" target="_blank">¿Cómo funciona el sorteo?</a>
+    </p>
+  </footer>
+
+
+  <!-- ═══════════════════════════════════════════════════════
+       JAVASCRIPT — acordeón de años
+  ════════════════════════════════════════════════════════ -->
+  <script>
+    function toggleYear(button) {
+      const content = button.nextElementSibling;
+      const isOpen = content.classList.contains('open');
+
+      // Cerrá solo los colapsables (no el 2026)
+      document.querySelectorAll('.year-toggle:not(.year-current)').forEach(btn => {
+        btn.classList.remove('open');
+        btn.nextElementSibling.classList.remove('open');
+      });
+
+      // Abrí el clickeado (si estaba cerrado)
+      if (!isOpen) {
+        content.classList.add('open');
+        button.classList.add('open');
+      }
+    }
+  </script>
+
+</body>
+</html>
